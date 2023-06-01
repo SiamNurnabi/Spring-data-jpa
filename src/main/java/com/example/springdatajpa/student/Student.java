@@ -3,6 +3,15 @@ package com.example.springdatajpa.student;
 import jakarta.persistence.*;
 
 @Entity(name = "Student")
+@Table(
+        name = "Student",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "student_email_unique",
+                        columnNames = {"email"}
+                )
+        }
+)
 public class Student {
     @Id
     @SequenceGenerator(
@@ -14,17 +23,43 @@ public class Student {
             strategy = GenerationType.SEQUENCE,
             generator = "student_sequence"
     )
+    @Column(
+            name = "id",
+            updatable = false
+    )
     private long id;
+    @Column(
+            name = "firstName",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String firstName;
+
+    @Column(
+            name = "lastName",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String lastName;
+
+    @Column(
+            name = "email",
+            nullable = false
+//            unique = true
+    )
     private String email;
-    private String age;
+
+    @Column(
+            name = "age",
+            nullable = false
+    )
+    private Integer age;
 
     public Student(long id,
                    String firstName,
                    String lastName,
                    String email,
-                   String age) {
+                   Integer age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -68,11 +103,11 @@ public class Student {
         this.email = email;
     }
 
-    public String getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
