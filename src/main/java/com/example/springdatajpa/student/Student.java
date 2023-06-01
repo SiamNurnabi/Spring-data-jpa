@@ -1,6 +1,11 @@
 package com.example.springdatajpa.student;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity(name = "Student")
 public class Student {
+    @Id
     private long id;
     private String firstName;
     private String lastName;
@@ -17,6 +22,10 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public long getId() {
