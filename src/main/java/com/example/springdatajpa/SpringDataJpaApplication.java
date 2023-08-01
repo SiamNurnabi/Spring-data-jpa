@@ -34,29 +34,18 @@ public class SpringDataJpaApplication {
             studentList.add(student1);
             studentList.add(student2);
             studentRepository.saveAll(studentList);
-            System.out.println("Student count:" + studentRepository.count());
+            System.out.println("Student count::::::::::" + studentRepository.count());
 
             studentRepository
-                    .findById(2L)
+                    .findStudentByEmail("sifatnur@gmail.com")
                     .ifPresentOrElse(student -> {
                         System.out.println(student);
                     }, () -> {
-                        System.out.println("Student with id 2 not found");
+                        System.out.println("Student with email sifatnur@gmail.com not found");
                     });
-
             studentRepository
-                    .findById(3L)
-                    .ifPresentOrElse(System.out::println, () -> System.out.println("Student with id 3 not found"));
-
-            List<Student> students = studentRepository.findAll();
-            for (Student student :
-                    students) {
-                System.out.println(student);
-            }
-
-            studentRepository.deleteById(1L);
-
-            System.out.println("Student count:" + studentRepository.count());
+                    .findStudentByFirstNameEqualsAndAgeEquals("jarin", 22)
+                    .forEach(System.out::println);
         };
     }
 
