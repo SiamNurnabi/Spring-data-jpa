@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
@@ -23,14 +26,25 @@ public class SpringDataJpaApplication {
     CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
         return args -> {
             generateRandomStudents(studentRepository);
+
+//            Pageable pageable = Pageable.ofSize(5);
+            PageRequest pageRequest = PageRequest.of(
+                    0,
+                    5,
+                    Sort.by("firstName").ascending());
+            Page<Student> page = studentRepository.findAll(pageRequest);
+
+            System.out.println(page);
+        };
+    }
+
+    private void sorting(StudentRepository studentRepository) {
+        Sort sort = Sort.by( "firstName").descending()
+                .and(Sort.by("age").ascending());
 //            Sort sort = Sort.by(Sort.Direction.ASC, "firstName");
 
-            Sort sort = Sort.by( "firstName").descending()
-                    .and(Sort.by("age").ascending());
-
-            studentRepository.findAll(sort)     //this property name should come from entity class variable
-                    .forEach(student -> System.out.println(student.getFirstName()+" "+student.getAge()));
-        };
+        studentRepository.findAll(sort)     //this property name should come from entity class variable
+                .forEach(student -> System.out.println(student.getFirstName()+" "+student.getAge()));
     }
 
     private void generateRandomStudents(StudentRepository studentRepository) {
