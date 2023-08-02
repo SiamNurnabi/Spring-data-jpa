@@ -30,33 +30,52 @@ public class SpringDataJpaApplication {
                     "nur",
                     "sifatnur@gmail.com",
                     20);
+            Student student3 = new Student(
+                    "siam",
+                    "nurnabi",
+                    "siamnurnabi@gmail.com",
+                    27);
             List studentList = new ArrayList();
             studentList.add(student1);
             studentList.add(student2);
+            studentList.add(student3);
             studentRepository.saveAll(studentList);
-            System.out.println("Student count:" + studentRepository.count());
+            System.out.println("Student count::::::::::" + studentRepository.count());
 
             studentRepository
-                    .findById(2L)
+                    .findStudentByEmail("sifatnur@gmail.com")
                     .ifPresentOrElse(student -> {
                         System.out.println(student);
                     }, () -> {
-                        System.out.println("Student with id 2 not found");
+                        System.out.println("Student with email sifatnur@gmail.com not found");
                     });
-
+            System.out.println("without jpql::::::");
             studentRepository
-                    .findById(3L)
-                    .ifPresentOrElse(System.out::println, () -> System.out.println("Student with id 3 not found"));
+                    .findStudentByFirstNameEqualsAndAgeEquals("jarin", 22)
+                    .forEach(System.out::println);
 
-            List<Student> students = studentRepository.findAll();
-            for (Student student :
-                    students) {
-                System.out.println(student);
-            }
+            System.out.println("with jpql::::::");
+            studentRepository
+                    .findStudentByFirstNameEqualsAndAgeEqualsJpql("jarin", 22)
+                    .forEach(System.out::println);
 
-            studentRepository.deleteById(1L);
+            System.out.println("with native query::::::");
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastNameNative("si%","anjum")
+                    .forEach(System.out::println);
 
-            System.out.println("Student count:" + studentRepository.count());
+            System.out.println("without native query::::::");
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastName("si%","anjum")
+                    .forEach(System.out::println);
+
+            System.out.println("****with native query and named parameter******");
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastNameNative_NamedParameter("si%","anjum")
+                    .forEach(System.out::println);
+
+            System.out.println("****Deleting siam******");
+            System.out.println(studentRepository.deleteStudentById(3L));
         };
     }
 
