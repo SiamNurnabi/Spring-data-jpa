@@ -49,11 +49,22 @@ public class SpringDataJpaApplication {
                     }, () -> {
                         System.out.println("Student with email sifatnur@gmail.com not found");
                     });
+            System.out.println("without jpql::::::");
             studentRepository
                     .findStudentByFirstNameEqualsAndAgeEquals("jarin", 22)
                     .forEach(System.out::println);
 
+            System.out.println("with jpql::::::");
+            studentRepository
+                    .findStudentByFirstNameEqualsAndAgeEqualsJpql("jarin", 22)
+                    .forEach(System.out::println);
 
+            System.out.println("with native query::::::");
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastNameNative("si%","anjum")
+                    .forEach(System.out::println);
+
+            System.out.println("without native query::::::");
             studentRepository
                     .findStudentsByFirstNameLikeOrLastName("si%","anjum")
                     .forEach(System.out::println);

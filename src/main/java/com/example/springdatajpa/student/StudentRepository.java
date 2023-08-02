@@ -17,8 +17,15 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     "select s from Student s where s.email = ?1" this jpql
     */
 
-    @Query("Select s from Student s Where s.firstName = ?1 And s.age= ?2 ")
     List<Student> findStudentByFirstNameEqualsAndAgeEquals(String firstName, Integer age);
 
+    @Query("Select s from Student s Where s.firstName = ?1 And s.age= ?2 ")
+    List<Student> findStudentByFirstNameEqualsAndAgeEqualsJpql(String firstName, Integer age);
+
     List<Student> findStudentsByFirstNameLikeOrLastName(String firstName, String LastName);
+
+    @Query(value = "SELECT * FROM Student WHERE \n" +
+            "    firstName LIKE ?1 OR lastName = ?2",
+            nativeQuery = true)
+    List<Student> findStudentsByFirstNameLikeOrLastNameNative(String firstName, String LastName);
 }
