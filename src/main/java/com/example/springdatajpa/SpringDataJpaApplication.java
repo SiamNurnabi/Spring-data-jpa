@@ -69,6 +69,13 @@ public class SpringDataJpaApplication {
                     .findStudentsByFirstNameLikeOrLastName("si%","anjum")
                     .forEach(System.out::println);
 
+            System.out.println("****with native query and named parameter******");
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastNameNative_NamedParameter("si%","anjum")
+                    .forEach(System.out::println);
+
+            System.out.println("****Deleting siam******");
+            System.out.println(studentRepository.deleteStudentById(3L));
         };
     }
 
