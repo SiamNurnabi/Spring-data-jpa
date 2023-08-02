@@ -30,9 +30,15 @@ public class SpringDataJpaApplication {
                     "nur",
                     "sifatnur@gmail.com",
                     20);
+            Student student3 = new Student(
+                    "siam",
+                    "nurnabi",
+                    "siamnurnabi@gmail.com",
+                    27);
             List studentList = new ArrayList();
             studentList.add(student1);
             studentList.add(student2);
+            studentList.add(student3);
             studentRepository.saveAll(studentList);
             System.out.println("Student count::::::::::" + studentRepository.count());
 
@@ -46,6 +52,12 @@ public class SpringDataJpaApplication {
             studentRepository
                     .findStudentByFirstNameEqualsAndAgeEquals("jarin", 22)
                     .forEach(System.out::println);
+
+
+            studentRepository
+                    .findStudentsByFirstNameLikeOrLastName("si%","anjum")
+                    .forEach(System.out::println);
+
         };
     }
 
