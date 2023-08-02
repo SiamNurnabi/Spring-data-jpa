@@ -2,6 +2,7 @@ package com.example.springdatajpa;
 
 import com.example.springdatajpa.student.Student;
 import com.example.springdatajpa.student.StudentRepository;
+import com.github.javafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +21,19 @@ public class SpringDataJpaApplication {
     @Bean
     CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
         return args -> {
-
+            Faker faker = new Faker();
+            for (int i = 0; i < 20; i++) {
+                String firstName = faker.name().firstName();
+                String lastName = faker.name().lastName();
+                String email = String.format("%s%s@yopmail.com", firstName, lastName);
+                Student student = new Student(
+                        firstName,
+                        lastName,
+                        email,
+                        faker.number().numberBetween(15, 45)
+                );
+                studentRepository.save(student);
+            }
         };
     }
 
