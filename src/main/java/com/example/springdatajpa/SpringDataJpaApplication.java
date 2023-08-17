@@ -1,6 +1,8 @@
 package com.example.springdatajpa;
 
 import com.example.springdatajpa.student.Student;
+import com.example.springdatajpa.student.StudentIdCard;
+import com.example.springdatajpa.student.StudentIdCardRepository;
 import com.example.springdatajpa.student.StudentRepository;
 import com.github.javafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
@@ -23,28 +25,24 @@ public class SpringDataJpaApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
+    CommandLineRunner commandLineRunner(
+            StudentRepository studentRepository,
+            StudentIdCardRepository studentIdCardRepository) {
         return args -> {
-            generateRandomStudents(studentRepository);
-
-//            Pageable pageable = Pageable.ofSize(5);
-            PageRequest pageRequest = PageRequest.of(
-                    0,
-                    5,
-                    Sort.by("firstName").ascending());
-            Page<Student> page = studentRepository.findAll(pageRequest);
-
-            System.out.println(page);
+//            generateRandomStudents(studentRepository);
+            Faker faker = new Faker();
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            Student student = new Student(
+                    firstName,
+                    lastName,
+                    String.format("%s%s@yopmail.com", firstName, lastName),
+                    faker.number().numberBetween(20, 30)
+            );
+            studentIdCardRepository.save(
+                    new StudentIdCard("123456789", student)
+            );
         };
-    }
-
-    private void sorting(StudentRepository studentRepository) {
-        Sort sort = Sort.by( "firstName").descending()
-                .and(Sort.by("age").ascending());
-//            Sort sort = Sort.by(Sort.Direction.ASC, "firstName");
-
-        studentRepository.findAll(sort)     //this property name should come from entity class variable
-                .forEach(student -> System.out.println(student.getFirstName()+" "+student.getAge()));
     }
 
     private void generateRandomStudents(StudentRepository studentRepository) {
