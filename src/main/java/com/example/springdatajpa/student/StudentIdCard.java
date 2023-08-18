@@ -42,7 +42,8 @@ public class StudentIdCard {
     )
     @JoinColumn(
             name = "student_id",
-            referencedColumnName = "id"
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "student_id_card_student_id_fk")
     )
     private Student student;
 
