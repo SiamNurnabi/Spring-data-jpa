@@ -38,9 +38,7 @@ public class Book {
     )
     private LocalDateTime createdAt;
 
-    @ManyToOne(
-
-    )
+    @ManyToOne()
     @JoinColumn(
             name = "student_id",
             referencedColumnName = "id",
