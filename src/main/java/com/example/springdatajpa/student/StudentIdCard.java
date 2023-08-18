@@ -37,7 +37,7 @@ public class StudentIdCard {
 
 
     @OneToOne(
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.PERSIST,
             fetch = FetchType.EAGER
     )
     @JoinColumn(
